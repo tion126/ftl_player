@@ -1,0 +1,41 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_forbidshot (0.0.1):
+    - Flutter
+  - ftl_player (0.0.1):
+    - Flutter
+    - TXLiteAVSDK_Player
+  - screen (0.0.1):
+    - Flutter
+  - TXLiteAVSDK_Player (7.9.9565)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_forbidshot (from `.symlinks/plugins/flutter_forbidshot/ios`)
+  - ftl_player (from `.symlinks/plugins/ftl_player/ios`)
+  - screen (from `.symlinks/plugins/screen/ios`)
+
+SPEC REPOS:
+  trunk:
+    - TXLiteAVSDK_Player
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_forbidshot:
+    :path: ".symlinks/plugins/flutter_forbidshot/ios"
+  ftl_player:
+    :path: ".symlinks/plugins/ftl_player/ios"
+  screen:
+    :path: ".symlinks/plugins/screen/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_forbidshot: feac5273065c5b7b6b57a9c6ec4936e3be473523
+  ftl_player: 440aa492d526a3cacd91318f5442cc5733d9af8b
+  screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
+  TXLiteAVSDK_Player: 1e174994f478514c72a7db06d9b04e5968db6cdd
+
+PODFILE CHECKSUM: 8e679eca47255a8ca8067c4c67aab20e64cb974d
+
+COCOAPODS: 1.10.0.rc.1
