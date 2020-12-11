@@ -4,6 +4,8 @@
 
 左iOS 右安卓
 
+pub地址 https://pub.dev/packages/ftl_player
+
 ![Image text](./screenshot1.png)
 
 ![Image text](./screenshot2.png)
