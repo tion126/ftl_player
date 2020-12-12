@@ -21,7 +21,7 @@ Container(
     this.wraperController.playerController.startAutoType("11111");
 }))
 ```
-可以自定义修改UI，例如增加弹幕之类的功能
+可以自定义修改UI，例如增加弹幕之类的功能，也可以播放其他平台的直播不一定要腾讯的。
 
 目前已知问题 
 
