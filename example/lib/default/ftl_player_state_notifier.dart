@@ -30,6 +30,8 @@ class FTLPlayerStateNotifier extends ValueNotifier<FTLPlayerStateValue> {
         break;
       case "onNetStatus":
         var netSpeed = double.parse("${call.arguments[NET_STATUS_NET_SPEED]}",(err)=>0.0)/8;
+        var height = double.parse("${call.arguments[NET_STATUS_VIDEO_HEIGHT]}",(e)=>null);
+        var width = double.parse("${call.arguments[NET_STATUS_VIDEO_WIDTH]}",(e)=>null);
 
         var netText;
         if (netSpeed > 1024) {
@@ -39,7 +41,11 @@ class FTLPlayerStateNotifier extends ValueNotifier<FTLPlayerStateValue> {
         }else{
           netText = "";
         }
-        this.value = this.value.copyWith(netSpeed:netText,netParam: call.arguments);
+        this.value = this.value.copyWith(
+          height : height,
+          width: width,
+          netSpeed:netText,
+          netParam: call.arguments);
         break;
       default:
     }
@@ -75,15 +81,19 @@ enum FTLPlayerState {
 class FTLPlayerStateValue {
   FTLPlayerState state;
   String         netSpeed;
+  double         height;
+  double         width;
   Map            eventParam;
   Map            netParam;
-  FTLPlayerStateValue({this.state = FTLPlayerState.Buffering,this.netSpeed = "",this.netParam,this.eventParam});
-  FTLPlayerStateValue copyWith({FTLPlayerState state ,String netSpeed,Map netParam,Map eventParam}){
+  FTLPlayerStateValue({this.state = FTLPlayerState.Buffering,this.netSpeed = "",this.netParam,this.eventParam,this.height = 0,this.width = 0});
+  FTLPlayerStateValue copyWith({FTLPlayerState state ,String netSpeed,Map netParam,Map eventParam,double height,double width}){
       return FTLPlayerStateValue(
         state : state ?? this.state,
         netSpeed : netSpeed ?? this.netSpeed,
         eventParam : eventParam ?? this.eventParam,
-        netParam : netParam ?? this.netParam
+        netParam : netParam ?? this.netParam,
+        height : height ?? this.height,
+        width : width ?? this.width
       );
   }
 }

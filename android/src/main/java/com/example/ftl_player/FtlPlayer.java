@@ -130,8 +130,8 @@ public class FtlPlayer implements ITXLivePlayListener, MethodChannel.MethodCallH
             case "start":
 //                String url = call.argument("url");
 //                Integer type = call.argument("type");
-                 url = call.argument("url");
-                 type = call.argument("type");
+                url = call.argument("url");
+                type = call.argument("type");
                 result.success(play(url, type == null ? TXLivePlayer.PLAY_TYPE_VOD_HLS : type));
                 break;
             case "pause":
@@ -172,6 +172,7 @@ public class FtlPlayer implements ITXLivePlayListener, MethodChannel.MethodCallH
             case "setMute":
                 // 设置静音
                 boolean isMute = call.arguments();
+                mLivePlayer.setVolume(isMute ? 0 : 100);
                 result.success(null);
                 break;
             default:

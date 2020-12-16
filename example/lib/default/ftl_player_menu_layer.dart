@@ -25,14 +25,14 @@ class FTLPlayerMenuLayerState extends State<FTLPlayerMenuLayer> {
           top: 0,
           bottom: 0,
           right: wraperController.showMenu ? 0 : -400,
-          child: SafeArea(top: wraperController.fullScreen,left: false,bottom: false,child:Container(
+          child: SafeArea(top: false,left: false,bottom: false,child:Container(
               width: 250,
               decoration: BoxDecoration(
                   color: Colors.black54,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(16),
                       bottomLeft: Radius.circular(16))),
-              child: Column(children: [
+              child: SingleChildScrollView(child: Column(children: [
                 Container(
                     padding: EdgeInsets.only(top: 10, left: 15, right: 15),
                     child: Row(children: [
@@ -82,8 +82,18 @@ class FTLPlayerMenuLayerState extends State<FTLPlayerMenuLayer> {
                       Switch(value: wraperController.enableHWAcceleration, onChanged: (e){
                           wraperController.setEnableHWAcceleration(e);
                       })
+                    ])),
+                Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(children: [
+                      Text("自动比例",
+                          style: TextStyle(color: Colors.white, fontSize: 12)),
+                      Container(width: 10),
+                      Switch(value: wraperController.aotuRatio, onChanged: (e){
+                          wraperController.setAutoRatio(e);
+                      })
                     ]))
-              ]))))
+              ])))))
     ]));
   }
 }

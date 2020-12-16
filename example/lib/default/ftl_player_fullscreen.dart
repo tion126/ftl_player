@@ -6,6 +6,7 @@ import 'ftl_player_marquee_layer.dart';
 import 'ftl_player_menu_layer.dart';
 import 'ftl_player_state_notifier.dart';
 import 'ftl_player_wraper_controller.dart';
+import 'ftl_player_wraper_widget.dart';
 
 class FTLPlayerFullScreen extends StatefulWidget{
   final FTLPlayerWraperController wraperController;
@@ -31,7 +32,7 @@ class FTLPlayerFullScreenState extends State<FTLPlayerFullScreen> {
               value: widget.wraperController?.notifier),
         ],
         child: Stack(children: [
-              SafeArea(top: false,bottom: false,child: FTLPlayerWidget(widget.wraperController.playerController)),
+              SafeArea(top: false,bottom: false,child: FTLPlayerWraperWidget(widget.wraperController.playerController)),
               FTLPlayerMarqueeLayer(widget.wraperController.marqueeContent),
               FTLPlayerControlLayer(),
               FTLPlayerMenuLayer()

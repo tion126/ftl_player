@@ -105,6 +105,12 @@ class FTLPlayerWraperController extends ChangeNotifier {
   /*marquee */
   String marqueeContent = "test121dcewc";
 
+  /*比例 */
+  double ratio;
+  
+  /*全屏是否自动适配比例 */
+  bool aotuRatio = true;
+
   void stateListener() {
 
     if (this.notifier.value.state != this.state) {
@@ -130,6 +136,17 @@ class FTLPlayerWraperController extends ChangeNotifier {
     }
     print(this.notifier.value.eventParam);
     this.state = this.notifier.value.state;
+
+    if (this.notifier.value.width > 0 && this.notifier.value.height > 0) {
+
+      var newRatio = this.notifier.value.width / this.notifier.value.height;
+      if (newRatio != this.ratio) {
+        this.ratio = newRatio;
+        this.notifyListeners();
+      }else{
+        this.ratio = newRatio;
+      }
+    }
   }
 
   void onTap() {
@@ -232,6 +249,11 @@ class FTLPlayerWraperController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setAutoRatio(bool e){
+    this.aotuRatio = e;
+    notifyListeners();
+  }
+
   void hideTimerStart() {
     if (this.timer != null) {
       this.timer.cancel();
@@ -271,6 +293,7 @@ class FTLPlayerWraperController extends ChangeNotifier {
     this.playerOrientation = orientation;
     SystemChrome.setPreferredOrientations([orientation]);
     this.handler?.screenOrientationChange(orientation);
+    this.notifyListeners();
   }
 
   void back(){
