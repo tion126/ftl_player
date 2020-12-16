@@ -109,7 +109,7 @@ class FTLPlayerWraperController extends ChangeNotifier {
   double ratio;
   
   /*全屏是否自动适配比例 */
-  bool aotuRatio = true;
+  bool aotuRatio = false;
 
   void stateListener() {
 

@@ -9,6 +9,7 @@ import 'ftl_player_menu_layer.dart';
 import 'ftl_player_observer.dart';
 import 'ftl_player_state_notifier.dart';
 import 'ftl_player_wraper_controller.dart';
+import 'ftl_player_wraper_widget.dart';
 
 typedef OnFTLPlayerWraperCreate = void Function(FTLPlayerWraperController wraperController);
 
@@ -51,7 +52,7 @@ class FTLPlayerWraperState extends State<FTLPlayerWraper> {
         
         child: Stack(children: [
               FTLPlayerObserver(),
-              FTLPlayerWidget(this.wraperController.playerController),
+              FTLPlayerWraperWidget(wraperController.playerController),
               FTLPlayerMarqueeLayer(this.wraperController.marqueeContent),
               FTLPlayerControlLayer(),
               FTLPlayerMenuLayer()
