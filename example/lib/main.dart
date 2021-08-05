@@ -1,12 +1,11 @@
 import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ftl_player/ftl_player.dart';
-import 'package:ftl_player_example/default/ftl_player_state_notifier.dart';
-import 'package:ftl_player_example/default/ftl_player_wraper.dart';
-import 'package:ftl_player_example/default/ftl_player_wraper_controller.dart';
+import 'package:ftl_player_example/skin/ftl_player_skin.dart';
+import 'package:ftl_player_example/skin/ftl_player_skin_controller.dart';
+import 'package:ftl_player_example/skin/ftl_player_state_notifier.dart';
 
 void main() => runApp(app());
 
@@ -28,7 +27,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: OutlineButton(
+        child: CupertinoButton(
           child: Text("Player"),
           onPressed: () {
             Navigator.of(context).pushNamed("/page1");
@@ -47,8 +46,11 @@ class PlayerExample extends StatefulWidget {
 }
 
 class PlayerExampleState extends State<PlayerExample> implements FTLPlayerEventHandler{
-  FTLPlayerController playerController;
-  FTLPlayerWraperController wraperController;
+   FTLPlayerController? livePlayerController;
+   FTLPlayerSkinController? liveSkinController;
+
+   FTLPlayerController? vodPlayerController;
+   FTLPlayerSkinController? vodSkinController;
 
   @override
   void initState() {
@@ -58,21 +60,23 @@ class PlayerExampleState extends State<PlayerExample> implements FTLPlayerEventH
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
             child: Column(children: [
           Padding(padding: EdgeInsets.only(top: 50)),
-          Container(height: 200, child: FTLPlayerWidget(this.playerController)),
+          Container(height: 200, child: FTLPlayerWidget(this.livePlayerController)),
           Padding(padding: EdgeInsets.only(top: 50)),
           Container(
               height: 200,
-              child: FTLPlayerWraper((c) {
-                this.wraperController = c;
-                this.playerController = c.playerController;
-                this.wraperController.handler = this;
-                this.wraperController.playerController.startAutoType("http://1011.hlsplay.aodianyun.com/demo/game.flv");
+              child: FTLPlayerSkin((c) {
+                this.liveSkinController = c;
+                this.livePlayerController = c.playerController;
+                this.liveSkinController!.handler = this;
+                this.liveSkinController!.playerController.startAutoType("http://1011.hlsplay.aodianyun.com/demo/game.flv");
                 this.setState(() {});
               })),
           Padding(padding: EdgeInsets.only(top: 30)),
+          ///vod
           _optBtn()
         ])),
       );
@@ -85,33 +89,33 @@ class PlayerExampleState extends State<PlayerExample> implements FTLPlayerEventH
         children: <Widget>[
           CupertinoButton(
             onPressed: () {
-              this.wraperController.playerController.startAutoType("http://1011.hlsplay.aodianyun.com/demo/game.flv");
+              this.liveSkinController!.playerController.startAutoType("http://1011.hlsplay.aodianyun.com/demo/game.flv");
             },
             child: new Text("Start"),
           ),
           CupertinoButton(
             onPressed: () {
-              wraperController.playerController.pause();
+              liveSkinController!.playerController.pause();
             },
             child: Text("pause"),
           ),
           CupertinoButton(
             onPressed: () {
-              this.wraperController.playerController.resume();
+              this.liveSkinController!.playerController.resume();
             },
             child: new Text("resume"),
           ),
           CupertinoButton(
             onPressed: () {
-              this.wraperController.playerController.dispose();
+              this.liveSkinController!.playerController.dispose();
             },
             child: new Text("dispose"),
           ),
           CupertinoButton(
             onPressed: () {
-              wraperController.playerController.pause();
+              liveSkinController!.playerController.pause();
               Navigator.of(context).pushNamed("/page1").then((value){
-                wraperController.playerController.resume();
+                liveSkinController!.playerController.resume();
               });
             },
             child: new Text("new page"),
@@ -129,7 +133,7 @@ class PlayerExampleState extends State<PlayerExample> implements FTLPlayerEventH
   @override
   void needRefresh() {
     
-    this.wraperController.playerController.startAutoType(Random().nextBool() ? "http://liteavapp.qcloud.com/live/liteavdemoplayerstreamid.flv" : "http://1011.hlsplay.aodianyun.com/demo/game.flv");
+    this.liveSkinController!.playerController.startAutoType(Random().nextBool() ? "http://liteavapp.qcloud.com/live/liteavdemoplayerstreamid.flv" : "http://1011.hlsplay.aodianyun.com/demo/game.flv");
   }
 
   @override

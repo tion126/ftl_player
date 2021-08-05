@@ -29,9 +29,9 @@ class FTLPlayerStateNotifier extends ValueNotifier<FTLPlayerStateValue> {
 
         break;
       case "onNetStatus":
-        var netSpeed = double.parse("${call.arguments[NET_STATUS_NET_SPEED]}",(err)=>0.0)/8;
-        var height = double.parse("${call.arguments[NET_STATUS_VIDEO_HEIGHT]}",(e)=>null);
-        var width = double.parse("${call.arguments[NET_STATUS_VIDEO_WIDTH]}",(e)=>null);
+        double netSpeed = double.tryParse("${call.arguments[NET_STATUS_NET_SPEED]}") ?? 0 /8;
+        double height = double.tryParse("${call.arguments[NET_STATUS_VIDEO_HEIGHT]}") ?? 0 ;
+        double width = double.tryParse("${call.arguments[NET_STATUS_VIDEO_WIDTH]}") ?? 0 ;
 
         var netText;
         if (netSpeed > 1024) {
@@ -83,10 +83,10 @@ class FTLPlayerStateValue {
   String         netSpeed;
   double         height;
   double         width;
-  Map            eventParam;
-  Map            netParam;
+  Map?            eventParam;
+  Map?            netParam;
   FTLPlayerStateValue({this.state = FTLPlayerState.Buffering,this.netSpeed = "",this.netParam,this.eventParam,this.height = 0,this.width = 0});
-  FTLPlayerStateValue copyWith({FTLPlayerState state ,String netSpeed,Map netParam,Map eventParam,double height,double width}){
+  FTLPlayerStateValue copyWith({FTLPlayerState? state ,String? netSpeed,Map? netParam,Map? eventParam,double? height,double? width}){
       return FTLPlayerStateValue(
         state : state ?? this.state,
         netSpeed : netSpeed ?? this.netSpeed,

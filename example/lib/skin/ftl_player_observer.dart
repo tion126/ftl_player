@@ -2,8 +2,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'ftl_player_skin_controller.dart';
 
-import 'ftl_player_wraper_controller.dart';
 
 class FTLPlayerObserver extends StatefulWidget {
 
@@ -22,31 +22,31 @@ class FTLPlayerObserverState extends State<FTLPlayerObserver> with WidgetsBindin
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
   }
 
   @override
   void dispose() {
     super.dispose();
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    FTLPlayerWraperController wraperController =
-        Provider.of<FTLPlayerWraperController>(context, listen: false);
+    FTLPlayerSkinController skinController =
+        Provider.of<FTLPlayerSkinController>(context, listen: false);
 
     switch (state) {
       case AppLifecycleState.resumed:
-        if (!wraperController.notifier.playing) {
-          wraperController.onPlay();
+        if (!skinController.notifier.playing) {
+          skinController.onPlay();
         }
         break;
       case AppLifecycleState.paused:
-        if (wraperController.notifier.playing) {
-          wraperController.onPlay();
+        if (skinController.notifier.playing) {
+          skinController.onPlay();
         }
         break;
       case AppLifecycleState.inactive:

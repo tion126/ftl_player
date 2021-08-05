@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'ftl_player_controller.dart';
 
 class FTLPlayerWidget extends StatefulWidget {
-  final FTLPlayerController controller;
+  final FTLPlayerController? controller;
   FTLPlayerWidget(this.controller);
 
   @override
@@ -21,7 +21,7 @@ class FTLPlayerWidgetState extends State<FTLPlayerWidget>{
 
   @override
   Widget build(BuildContext context) {
-    return this.widget.controller == null ? Container(color: Colors.black) : Container(child:Texture(textureId: this.widget.controller.textureId),color: Colors.black);
+    return this.widget.controller == null ? Container(color: Colors.black) : Container(child:Texture(textureId: this.widget.controller!.textureId),color: Colors.black);
   }
 
   @override

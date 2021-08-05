@@ -1,13 +1,12 @@
 import 'dart:async';
+import 'package:brightness_volume/brightness_volume.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_forbidshot/flutter_forbidshot.dart';
 import 'package:ftl_player/ftl_orientation.dart';
 import 'package:ftl_player/ftl_player.dart';
 import 'package:ftl_player/ftl_player_controller.dart';
-import 'package:screen/screen.dart';
 import 'ftl_player_fullscreen.dart';
 import 'ftl_player_state_notifier.dart';
 
@@ -18,21 +17,21 @@ abstract class FTLPlayerEventHandler{
   void needRefresh();
 }
 
-class FTLPlayerWraperController extends ChangeNotifier {
-  FTLPlayerController playerController;
-  FTLPlayerStateNotifier notifier;
+class FTLPlayerSkinController extends ChangeNotifier {
+  late FTLPlayerController playerController;
+  late FTLPlayerStateNotifier notifier;
 
-  static Future<FTLPlayerWraperController> init() async {
-    FTLPlayerWraperController wraperController = FTLPlayerWraperController();
-    wraperController.playerController = await FTLPlayer.init(configs: TXLivePlayConfig(enableHWAcceleration: true));
-    wraperController.hideTimerStart();
-    wraperController.notifier = FTLPlayerStateNotifier(FTLPlayerStateValue());
-    wraperController.playerController.channel
-        .setMethodCallHandler(wraperController.notifier.callHandler);
-    wraperController.notifier.addListener(wraperController.stateListener);
-    ftlOrientation.addListener(wraperController.onDeviceOrientationEvent);
+  static Future<FTLPlayerSkinController> init() async {
+    FTLPlayerSkinController skinController = FTLPlayerSkinController();
+    skinController.playerController = await FTLPlayer.init(configs: TXLivePlayConfig(enableHWAcceleration: true));
+    skinController.hideTimerStart();
+    skinController.notifier = FTLPlayerStateNotifier(FTLPlayerStateValue());
+    skinController.playerController.channel
+        .setMethodCallHandler(skinController.notifier.callHandler);
+    skinController.notifier.addListener(skinController.stateListener);
+    ftlOrientation.addListener(skinController.onDeviceOrientationEvent);
 
-    return wraperController;
+    return skinController;
   }
 
   @override
@@ -43,14 +42,14 @@ class FTLPlayerWraperController extends ChangeNotifier {
     this.notifier.removeListener(this.stateListener);
     ftlOrientation.removeListener(this.onDeviceOrientationEvent);
     this.timer?.cancel();
-    Screen.keepOn(false);
+    BVUtils.keepOn(false);
   }
 
   /*封装事件回调 */
-  FTLPlayerEventHandler handler;
+  FTLPlayerEventHandler? handler;
 
   /*ctx */
-  BuildContext ctx;
+  BuildContext? ctx;
 
   /*锁定屏幕 */
   bool lock = false;
@@ -64,7 +63,7 @@ class FTLPlayerWraperController extends ChangeNotifier {
   }
 
   /* 当前的状态 */
-  FTLPlayerState state;
+  FTLPlayerState state = FTLPlayerState.Buffering;
 
   /*控制层是否显示 */
   bool showControl = false;
@@ -82,13 +81,13 @@ class FTLPlayerWraperController extends ChangeNotifier {
   String volumeText = "";
 
   /*音量icon */
-  IconData volumeIcon;
+  IconData? volumeIcon;
 
   /*亮度描述 */
   String brightnessText = "";
 
   /*亮度icon */
-  IconData brightnessIcon;
+  IconData? brightnessIcon;
 
   /*音量数值 */
   double volume = 0.0;
@@ -100,13 +99,13 @@ class FTLPlayerWraperController extends ChangeNotifier {
   bool   enableHWAcceleration = false;
 
   /*隐藏控制层 */
-  Timer timer;
+  Timer? timer;
 
   /*marquee */
   String marqueeContent = "test121dcewc";
 
   /*比例 */
-  double ratio;
+  double? ratio;
   
   /*全屏是否自动适配比例 */
   bool aotuRatio = false;
@@ -116,9 +115,9 @@ class FTLPlayerWraperController extends ChangeNotifier {
     if (this.notifier.value.state != this.state) {
       this.state = this.notifier.value.state;
       //常亮
-      Screen.keepOn(this.notifier.value.state == FTLPlayerState.Buffering || this.notifier.value.state == FTLPlayerState.Playing);
+      BVUtils.keepOn(this.notifier.value.state == FTLPlayerState.Buffering || this.notifier.value.state == FTLPlayerState.Playing);
       
-      this.handler?.playerStateChange(state);
+      this.handler?.playerStateChange(this.state);
 
       switch (this.notifier.value.state) {
         case FTLPlayerState.Failed:
@@ -225,20 +224,21 @@ class FTLPlayerWraperController extends ChangeNotifier {
   }
 
   syncDeviceData() async{
-    this.brightness = await Screen.brightness;
-    this.volume = await FlutterForbidshot.volume;
-    this.enableHWAcceleration = await this.playerController.enableHWAcceleration();
+    
+    this.brightness = await BVUtils.brightness;
+    this.volume = await BVUtils.volume;
+    this.enableHWAcceleration = await this.playerController.enableHWAcceleration() ?? false;
   }
 
   void setVolume(double v) {
     this.volume = v;
-    FlutterForbidshot.setVolume(v);
+    BVUtils.setVolume(v);
     notifyListeners();
   }
 
   void setBrightness(double b){
     this.brightness = b;
-    Screen.setBrightness(b);
+    BVUtils.setBrightness(b);
     notifyListeners();
   }
 
@@ -256,7 +256,7 @@ class FTLPlayerWraperController extends ChangeNotifier {
 
   void hideTimerStart() {
     if (this.timer != null) {
-      this.timer.cancel();
+      this.timer!.cancel();
       this.timer = null;
     }
 
@@ -272,7 +272,10 @@ class FTLPlayerWraperController extends ChangeNotifier {
   }
 
   void switchScreenOrientation(
-      BuildContext ctx, DeviceOrientation orientation) { 
+      BuildContext? ctx, DeviceOrientation orientation) { 
+    if (ctx == null) {
+      return;
+    }
     
     if (this.playerOrientation == orientation || this.lock || orientation == DeviceOrientation.portraitDown) {
       return;

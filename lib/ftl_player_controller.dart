@@ -6,7 +6,7 @@ import 'ftl_player_constant.dart';
 
 class FTLPlayerController {
   int                    textureId;
-  MethodChannel          channel;
+  late MethodChannel          channel;
 
   FTLPlayerController(this.textureId) {
     this.channel = MethodChannel('plugins/ftl_player${this.textureId}');
@@ -19,7 +19,7 @@ class FTLPlayerController {
 
   //开始
   Future<void> startAutoType(String url) {
-    TX_Enum_PlayType type = this.livePlayerType(url);
+    TX_Enum_PlayType? type = this.livePlayerType(url);
     if (type != null) {
       return this.channel.invokeMethod("start", {"url": url,"type":type.index});
     }else{
@@ -48,7 +48,7 @@ class FTLPlayerController {
   }
 
   //硬解开启状态
-  Future<bool> enableHWAcceleration() {
+  Future<bool?> enableHWAcceleration() {
     return this.channel.invokeMethod("enableHWAcceleration");
   }
   
@@ -63,8 +63,8 @@ class FTLPlayerController {
   }
 
   //判断直播类型
-  TX_Enum_PlayType livePlayerType(String url){
-    TX_Enum_PlayType type;
+  TX_Enum_PlayType? livePlayerType(String url){
+    TX_Enum_PlayType? type;
     Uri uri = Uri.parse(url);
     if (Platform.isAndroid) {
       type = TX_Enum_PlayType.PLAY_TYPE_VOD_HLS;

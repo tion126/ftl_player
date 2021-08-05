@@ -1,22 +1,23 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
 import 'ftl_player_gesture_layer.dart';
+import 'ftl_player_skin_controller.dart';
 import 'ftl_player_state_notifier.dart';
-import 'ftl_player_wraper_controller.dart';
+
 
 class FTLPlayerControlLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    FTLPlayerWraperController wraperController =
-        Provider.of<FTLPlayerWraperController>(context);
+    FTLPlayerSkinController skinController =
+        Provider.of<FTLPlayerSkinController>(context);
     Provider.of<FTLPlayerStateNotifier>(context);
     
     return FTLPlayerGestureLayer(Stack(children: [
       AnimatedPositioned(
           duration: Duration(milliseconds: 350),
-          top: !wraperController.showControl || wraperController.lock ? -100 : 0,
+          top: !skinController.showControl || skinController.lock ? -100 : 0,
           left: 0,
           right: 0,
           child: Container(
@@ -30,15 +31,15 @@ class FTLPlayerControlLayer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     genButton("ic-back", 22, () {
-                      wraperController.back();
+                      skinController.back();
                     }),
                     genButton("ic-more", 22, () {
-                      wraperController.onMenu();
+                      skinController.onMenu();
                     }),
-                  ]),wraperController.fullScreen))),
+                  ]),skinController.fullScreen))),
       AnimatedPositioned(
           duration: Duration(milliseconds: 350),
-          bottom: !wraperController.showControl || wraperController.lock ? -100 : 0,
+          bottom: !skinController.showControl || skinController.lock ? -100 : 0,
           left: 0,
           right: 0,
           child: Container(
@@ -50,30 +51,30 @@ class FTLPlayerControlLayer extends StatelessWidget {
               ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
               child: safeArea(Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                 genButton(
-                    wraperController.notifier?.playing ?? false
+                    skinController.notifier.playing
                         ? "ic-pause"
                         : "ic-play",
                     18,
-                    wraperController.onPlay),
-                genButton("ic-refresh", 18, wraperController.onRefresh),
+                    skinController.onPlay),
+                genButton("ic-refresh", 18, skinController.onRefresh),
                 Expanded(child: Container()),
                 Container(width: 16),
-                genButton(wraperController.fullScreen ? "ic-exitfull" : "ic-full", 16, () {
-                  wraperController.switchScreenOrientation(context,wraperController.fullScreen ? DeviceOrientation.portraitUp : DeviceOrientation.landscapeLeft);
+                genButton(skinController.fullScreen ? "ic-exitfull" : "ic-full", 16, () {
+                  skinController.switchScreenOrientation(context,skinController.fullScreen ? DeviceOrientation.portraitUp : DeviceOrientation.landscapeLeft);
                 }),
-              ]),wraperController.fullScreen))),
+              ]),skinController.fullScreen))),
       Align(
           child: AnimatedOpacity(
               duration: Duration(milliseconds: 350),
-              opacity: wraperController.showControl ? 1 : 0,
-              child: Visibility(visible: wraperController.showControl,child: safeArea(genButton(wraperController.lock ? "ic-lock" : "ic-unlock",
-                  22, wraperController.onLock),wraperController.fullScreen))),
+              opacity: skinController.showControl ? 1 : 0,
+              child: Visibility(visible: skinController.showControl,child: safeArea(genButton(skinController.lock ? "ic-lock" : "ic-unlock",
+                  22, skinController.onLock),skinController.fullScreen))),
           alignment: Alignment.centerLeft),
       Align(
           child: AnimatedOpacity(
               duration: Duration(milliseconds: 350),
-              opacity: wraperController.notifier.buffering ? 1 : 0,
-              child: Visibility(visible: wraperController.notifier.buffering,child: Container(
+              opacity: skinController.notifier.buffering ? 1 : 0,
+              child: Visibility(visible: skinController.notifier.buffering,child: Container(
                   color: Colors.transparent,
                   height: 90,
                   width: 90,
@@ -85,7 +86,7 @@ class FTLPlayerControlLayer extends StatelessWidget {
                             strokeWidth: 1,
                             valueColor: AlwaysStoppedAnimation(Colors.white)),
                         Padding(padding: EdgeInsets.only(top: 10)),
-                        Text(wraperController.notifier.value.netSpeed,
+                        Text(skinController.notifier.value.netSpeed,
                             style: TextStyle(color: Colors.white, fontSize: 12))
                       ]),
                   alignment: Alignment.center))),
@@ -93,8 +94,8 @@ class FTLPlayerControlLayer extends StatelessWidget {
         Align(
           child: AnimatedOpacity(
               duration: Duration(milliseconds: 350),
-              opacity: wraperController.notifier.failed ? 1 : 0,
-              child: Visibility(visible: wraperController.notifier.failed,child: InkWell(child: Container(
+              opacity: skinController.notifier.failed ? 1 : 0,
+              child: Visibility(visible: skinController.notifier.failed,child: InkWell(child: Container(
             decoration: BoxDecoration(
                 color: Colors.black54,
                 borderRadius: BorderRadius.all(Radius.circular(16))),
@@ -106,16 +107,15 @@ class FTLPlayerControlLayer extends StatelessWidget {
                             style: TextStyle(color: Colors.white, fontSize: 12))
                 ]),
                 alignment: Alignment.center),onTap: (){
-                  wraperController.onRefresh();
+                  skinController.onRefresh();
                 }))),
           alignment: Alignment.center)
     ]));
   }
 
   Widget genButton(String name, double size, VoidCallback onPressed) {
-    return FlatButton(
-      highlightColor: Colors.transparent,
-      minWidth: 44,
+    return CupertinoButton(
+      minSize: 0,
       child: Image.asset("assets/images/$name.png", height: size, width: size),
       onPressed: onPressed,
     );

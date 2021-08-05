@@ -6,14 +6,13 @@ description: Demonstrates how to use the ftl_player plugin.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^4.3.2+2
-  screen: ^0.0.5
-  flutter_forbidshot: ^0.0.2
+  provider: ^5.0.0
+  brightness_volume: ^1.0.3
 
   ftl_player:
     # When depending on this package from a real application you should use:
@@ -25,7 +24,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
+  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:

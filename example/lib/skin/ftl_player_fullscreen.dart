@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:ftl_player/ftl_player.dart';
 import 'package:provider/provider.dart';
 import 'ftl_player_control_layer.dart';
 import 'ftl_player_marquee_layer.dart';
 import 'ftl_player_menu_layer.dart';
+import 'ftl_player_skin_controller.dart';
+import 'ftl_player_skin_widget.dart';
 import 'ftl_player_state_notifier.dart';
-import 'ftl_player_wraper_controller.dart';
-import 'ftl_player_wraper_widget.dart';
+
 
 class FTLPlayerFullScreen extends StatefulWidget{
-  final FTLPlayerWraperController wraperController;
-  FTLPlayerFullScreen(this.wraperController);
+  final FTLPlayerSkinController skinController;
+  FTLPlayerFullScreen(this.skinController);
 
   @override
   State<StatefulWidget> createState() {
@@ -26,14 +26,14 @@ class FTLPlayerFullScreenState extends State<FTLPlayerFullScreen> {
       backgroundColor: Colors.black,
       body: MultiProvider(
         providers: [
-          ChangeNotifierProvider<FTLPlayerWraperController>.value(
-              value: widget.wraperController),
+          ChangeNotifierProvider<FTLPlayerSkinController>.value(
+              value: widget.skinController),
           ChangeNotifierProvider<FTLPlayerStateNotifier>.value(
-              value: widget.wraperController?.notifier),
+              value: widget.skinController.notifier),
         ],
         child: Stack(children: [
-              SafeArea(top: false,bottom: false,child: FTLPlayerWraperWidget(widget.wraperController.playerController)),
-              FTLPlayerMarqueeLayer(widget.wraperController.marqueeContent),
+              SafeArea(top: false,bottom: false,child: FTLPlayerSkinWidget(widget.skinController.playerController)),
+              FTLPlayerMarqueeLayer(widget.skinController.marqueeContent),
               FTLPlayerControlLayer(),
               FTLPlayerMenuLayer()
             ])));

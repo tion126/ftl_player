@@ -10,7 +10,7 @@ class FTLPlayer{
   static const MethodChannel _channel =
       const MethodChannel('plugins/ftl_player');
   
-   static Future<FTLPlayerController> init({TXLivePlayConfig configs}) async {
+   static Future<FTLPlayerController> init({TXLivePlayConfig? configs}) async {
     var map       = {
       "cacheTime" : configs?.cacheTime,
       "bAutoAdjustCacheTime" : configs?.bAutoAdjustCacheTime,
@@ -23,7 +23,7 @@ class FTLPlayer{
     };
     map.removeWhere((key, value) => value  == null);
     var id        = await _channel.invokeMethod<int>('init',map);
-    var ctl       = FTLPlayerController(id);
+    var ctl       = FTLPlayerController(id!);
     return ctl;
   }
 }

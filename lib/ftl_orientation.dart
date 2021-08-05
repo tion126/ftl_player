@@ -7,9 +7,8 @@ class FTLOrientation extends ValueNotifier<DeviceOrientation>{
 
   FTLOrientation._(value) : super(value){
     
-    _channel.setMethodCallHandler((call){
+    _channel.setMethodCallHandler((call) async{
         this.value = DeviceOrientation.values[call.arguments];
-        return;
     });
   }
 

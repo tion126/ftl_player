@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'ftl_player_wraper_controller.dart';
+import 'ftl_player_skin_controller.dart';
 
 class FTLPlayerMenuLayer extends StatefulWidget {
   @override
@@ -14,17 +13,17 @@ class FTLPlayerMenuLayer extends StatefulWidget {
 class FTLPlayerMenuLayerState extends State<FTLPlayerMenuLayer> {
   @override
   Widget build(BuildContext context) {
-    FTLPlayerWraperController wraperController =
-        Provider.of<FTLPlayerWraperController>(context);
+    FTLPlayerSkinController skinController =
+        Provider.of<FTLPlayerSkinController>(context);
     return GestureDetector(
-        behavior: wraperController.showMenu ? HitTestBehavior.opaque : HitTestBehavior.translucent,
-        onTap: wraperController.showMenu ? wraperController.onMenu : null,
+        behavior: skinController.showMenu ? HitTestBehavior.opaque : HitTestBehavior.translucent,
+        onTap: skinController.showMenu ? skinController.onMenu : null,
         child: Stack(children: [
       AnimatedPositioned(
           duration: Duration(milliseconds: 150),
           top: 0,
           bottom: 0,
-          right: wraperController.showMenu ? 0 : -400,
+          right: skinController.showMenu ? 0 : -400,
           child: SafeArea(top: false,left: false,bottom: false,child:Container(
               width: 250,
               decoration: BoxDecoration(
@@ -43,9 +42,9 @@ class FTLPlayerMenuLayerState extends State<FTLPlayerMenuLayer> {
                           color: Colors.white, size: 20),
                       Expanded(
                           child:Slider(
-                          value: wraperController.volume,
+                          value: skinController.volume,
                           onChanged: (v){
-                              wraperController.setVolume(v.clamp(0, 1));
+                              skinController.setVolume(v.clamp(0, 1));
                           },
                           min: 0,
                           max: 1.0,
@@ -63,9 +62,9 @@ class FTLPlayerMenuLayerState extends State<FTLPlayerMenuLayer> {
                           color: Colors.white, size: 20),
                       Expanded(
                           child: Slider(
-                          value: wraperController.brightness,
+                          value: skinController.brightness,
                           onChanged: (b){
-                              wraperController.setBrightness(b.clamp(0, 1));
+                              skinController.setBrightness(b.clamp(0, 1));
                           },
                           min: 0,
                           max: 1.0,
@@ -79,8 +78,8 @@ class FTLPlayerMenuLayerState extends State<FTLPlayerMenuLayer> {
                       Text("硬件加速",
                           style: TextStyle(color: Colors.white, fontSize: 12)),
                       Container(width: 10),
-                      Switch(value: wraperController.enableHWAcceleration, onChanged: (e){
-                          wraperController.setEnableHWAcceleration(e);
+                      Switch(value: skinController.enableHWAcceleration, onChanged: (e){
+                          skinController.setEnableHWAcceleration(e);
                       })
                     ])),
                 Container(
@@ -89,8 +88,8 @@ class FTLPlayerMenuLayerState extends State<FTLPlayerMenuLayer> {
                       Text("自动比例",
                           style: TextStyle(color: Colors.white, fontSize: 12)),
                       Container(width: 10),
-                      Switch(value: wraperController.aotuRatio, onChanged: (e){
-                          wraperController.setAutoRatio(e);
+                      Switch(value: skinController.aotuRatio, onChanged: (e){
+                          skinController.setAutoRatio(e);
                       })
                     ]))
               ])))))

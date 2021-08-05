@@ -1,10 +1,8 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
-import 'ftl_player_wraper_controller.dart';
+import 'ftl_player_skin_controller.dart';
 
 class FTLPlayerGestureLayer extends StatefulWidget {
   final Widget child;
@@ -19,16 +17,16 @@ class FTLPlayerGestureLayer extends StatefulWidget {
 class FTLPlayerGestureLayerState extends State<FTLPlayerGestureLayer> {
   @override
   Widget build(BuildContext context) {
-    FTLPlayerWraperController wraperController =
-        Provider.of<FTLPlayerWraperController>(context, listen: false);
+    FTLPlayerSkinController skinController =
+        Provider.of<FTLPlayerSkinController>(context, listen: false);
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       child: Stack(children: [
         widget.child,
-        if (wraperController.showBrightness) brightnessWidget(),
-        if (wraperController.showVolume) volumeWidget()
+        if (skinController.showBrightness) brightnessWidget(),
+        if (skinController.showVolume) volumeWidget()
       ]),
-      onTap: wraperController.onTap,
+      onTap: skinController.onTap,
       onVerticalDragUpdate: this.onDrag,
       onVerticalDragEnd: this.onDrag,
       onVerticalDragStart: this.onDrag,
@@ -37,27 +35,29 @@ class FTLPlayerGestureLayerState extends State<FTLPlayerGestureLayer> {
   }
 
   void onDoubleTap() {
-    FTLPlayerWraperController wraperController =
-        Provider.of<FTLPlayerWraperController>(context, listen: false);
-    if (wraperController.lock) {
+    FTLPlayerSkinController skinController =
+        Provider.of<FTLPlayerSkinController>(context, listen: false);
+    if (skinController.lock) {
       return;
     }
-    wraperController.switchScreenOrientation(context,wraperController.fullScreen ? DeviceOrientation.portraitUp : DeviceOrientation.landscapeLeft);
+    skinController.switchScreenOrientation(context,skinController.fullScreen ? DeviceOrientation.portraitUp : DeviceOrientation.landscapeLeft);
   }
 
   void onDrag(e) {
-    FTLPlayerWraperController skinController =
-        Provider.of<FTLPlayerWraperController>(context, listen: false);
+    FTLPlayerSkinController skinController =
+        Provider.of<FTLPlayerSkinController>(context, listen: false);
     if (RenderObject.debugActiveLayout != null) {
       return;
     }
-    var size = context?.findRenderObject()?.paintBounds?.size;
-    skinController.onDragGesture(size, e);
+    var size = context.findRenderObject()?.paintBounds.size;
+    if (size != null) {
+      skinController.onDragGesture(size, e);
+    }
   }
 
   Widget volumeWidget() {
-    FTLPlayerWraperController skinController =
-        Provider.of<FTLPlayerWraperController>(context, listen: false);
+    FTLPlayerSkinController skinController =
+        Provider.of<FTLPlayerSkinController>(context, listen: false);
 
     return Align(
         child: Container(
@@ -76,8 +76,8 @@ class FTLPlayerGestureLayerState extends State<FTLPlayerGestureLayer> {
   }
 
   Widget brightnessWidget() {
-    FTLPlayerWraperController skinController =
-        Provider.of<FTLPlayerWraperController>(context, listen: false);
+    FTLPlayerSkinController skinController =
+        Provider.of<FTLPlayerSkinController>(context, listen: false);
 
     return Align(
         child: Container(

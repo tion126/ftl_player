@@ -17,15 +17,15 @@ class FTLPlayerMarqueeLayer extends StatefulWidget {
 class FTLPlayerMarqueeLayerState extends State<FTLPlayerMarqueeLayer>
     with SingleTickerProviderStateMixin {
   
-  AnimationController animationController;
-  Animation animation;
+  late AnimationController animationController;
+  late Animation<Offset> animation;
 
   Color color = Colors.white.withOpacity(0.6);
   double fontSize = 12;
   int duration    = 15 * 2;
   int interval    = 120;
   int paddingFlex = 8;
-  Timer timer;
+  Timer? timer;
   
   @override
   void initState() {
