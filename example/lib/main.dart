@@ -1,11 +1,7 @@
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ftl_player/ftl_player.dart';
-import 'package:ftl_player_example/skin/ftl_player_skin.dart';
-import 'package:ftl_player_example/skin/ftl_player_skin_controller.dart';
-import 'package:ftl_player_example/skin/ftl_player_state_notifier.dart';
 
 void main() => runApp(app());
 
@@ -45,16 +41,13 @@ class PlayerExample extends StatefulWidget {
   }
 }
 
-class PlayerExampleState extends State<PlayerExample> implements FTLPlayerEventHandler{
+class PlayerExampleState extends State<PlayerExample>{
    FTLPlayerController? livePlayerController;
-   FTLPlayerSkinController? liveSkinController;
-
-   FTLPlayerController? vodPlayerController;
-   FTLPlayerSkinController? vodSkinController;
 
   @override
   void initState() {
     super.initState();
+    FTLPlayer.init().then((value) => this.livePlayerController = value);
   }
 
   @override
@@ -65,18 +58,7 @@ class PlayerExampleState extends State<PlayerExample> implements FTLPlayerEventH
             child: Column(children: [
           Padding(padding: EdgeInsets.only(top: 50)),
           Container(height: 200, child: FTLPlayerWidget(this.livePlayerController)),
-          Padding(padding: EdgeInsets.only(top: 50)),
-          Container(
-              height: 200,
-              child: FTLPlayerSkin((c) {
-                this.liveSkinController = c;
-                this.livePlayerController = c.playerController;
-                this.liveSkinController!.handler = this;
-                this.liveSkinController!.playerController.start("http://1011.hlsplay.aodianyun.com/demo/game.flv");
-                this.setState(() {});
-              })),
           Padding(padding: EdgeInsets.only(top: 30)),
-          ///vod
           _optBtn()
         ])),
       );
@@ -89,33 +71,33 @@ class PlayerExampleState extends State<PlayerExample> implements FTLPlayerEventH
         children: <Widget>[
           CupertinoButton(
             onPressed: () {
-              this.liveSkinController!.playerController.start("http://1011.hlsplay.aodianyun.com/demo/game.flv");
+              this.livePlayerController!.start("http://1011.hlsplay.aodianyun.com/demo/game.flv");
             },
             child: new Text("Start"),
           ),
           CupertinoButton(
             onPressed: () {
-              liveSkinController!.playerController.pause();
+              this.livePlayerController!.pause();
             },
             child: Text("pause"),
           ),
           CupertinoButton(
             onPressed: () {
-              this.liveSkinController!.playerController.resume();
+              this.livePlayerController!.resume();
             },
             child: new Text("resume"),
           ),
           CupertinoButton(
             onPressed: () {
-              this.liveSkinController!.playerController.dispose();
+              this.livePlayerController!.dispose();
             },
             child: new Text("dispose"),
           ),
           CupertinoButton(
             onPressed: () {
-              liveSkinController!.playerController.pause();
+              this.livePlayerController!.pause();
               Navigator.of(context).pushNamed("/page1").then((value){
-                liveSkinController!.playerController.resume();
+                this.livePlayerController!.resume();
               });
             },
             child: new Text("new page"),
@@ -125,24 +107,5 @@ class PlayerExampleState extends State<PlayerExample> implements FTLPlayerEventH
     );
   }
 
-  @override
-  void didTapBack() {
-    Navigator.of(context).pop();
-  }
 
-  @override
-  void needRefresh() {
-    
-    this.liveSkinController!.playerController.start(Random().nextBool() ? "http://liteavapp.qcloud.com/live/liteavdemoplayerstreamid.flv" : "http://1011.hlsplay.aodianyun.com/demo/game.flv");
-  }
-
-  @override
-  void playerStateChange(FTLPlayerState state) {
-    print(state);
-  }
-  
-  @override
-  void screenOrientationChange(DeviceOrientation orientation) {
-    print(orientation);
-  }
 }
