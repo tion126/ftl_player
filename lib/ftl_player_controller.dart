@@ -5,7 +5,7 @@ import 'ftl_player_constant.dart';
 
 
 class FTLPlayerController {
-  int                    textureId;
+  int                         textureId;
   late MethodChannel          channel;
 
   FTLPlayerController(this.textureId) {
@@ -13,18 +13,18 @@ class FTLPlayerController {
   }
 
   //开始
-  Future<void> start(String url,TX_Enum_PlayType type) {
-    return this.channel.invokeMethod("start", {"url": url,"type":type.index});
-  }
-
-  //开始
-  Future<void> startAutoType(String url) {
+  Future<void> start(String url) {
     TX_Enum_PlayType? type = this.livePlayerType(url);
     if (type != null) {
       return this.channel.invokeMethod("start", {"url": url,"type":type.index});
     }else{
       return Future.value(false);
     }
+  }
+
+   //开始
+  Future<void> startWithType(String url,TX_Enum_PlayType type) {
+    return this.channel.invokeMethod("start", {"url": url,"type":type.index});
   }
 
   //暂停

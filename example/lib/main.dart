@@ -72,7 +72,7 @@ class PlayerExampleState extends State<PlayerExample> implements FTLPlayerEventH
                 this.liveSkinController = c;
                 this.livePlayerController = c.playerController;
                 this.liveSkinController!.handler = this;
-                this.liveSkinController!.playerController.startAutoType("http://1011.hlsplay.aodianyun.com/demo/game.flv");
+                this.liveSkinController!.playerController.start("http://1011.hlsplay.aodianyun.com/demo/game.flv");
                 this.setState(() {});
               })),
           Padding(padding: EdgeInsets.only(top: 30)),
@@ -89,7 +89,7 @@ class PlayerExampleState extends State<PlayerExample> implements FTLPlayerEventH
         children: <Widget>[
           CupertinoButton(
             onPressed: () {
-              this.liveSkinController!.playerController.startAutoType("http://1011.hlsplay.aodianyun.com/demo/game.flv");
+              this.liveSkinController!.playerController.start("http://1011.hlsplay.aodianyun.com/demo/game.flv");
             },
             child: new Text("Start"),
           ),
@@ -133,7 +133,7 @@ class PlayerExampleState extends State<PlayerExample> implements FTLPlayerEventH
   @override
   void needRefresh() {
     
-    this.liveSkinController!.playerController.startAutoType(Random().nextBool() ? "http://liteavapp.qcloud.com/live/liteavdemoplayerstreamid.flv" : "http://1011.hlsplay.aodianyun.com/demo/game.flv");
+    this.liveSkinController!.playerController.start(Random().nextBool() ? "http://liteavapp.qcloud.com/live/liteavdemoplayerstreamid.flv" : "http://1011.hlsplay.aodianyun.com/demo/game.flv");
   }
 
   @override
