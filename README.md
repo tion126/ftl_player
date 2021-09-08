@@ -13,15 +13,22 @@ pub地址 https://pub.dev/packages/ftl_player
 
 简单使用
 ``` dart
-Container(
-    height: 200,
-    child: FTLPlayerWraper((c) {
-    this.wraperController = c;
-    this.wraperController.handler = this;
-    this.wraperController.playerController.startAutoType("11111");
-}))
+
+ @override
+  void initState() {
+    super.initState();
+    FTLPlayer.init().then((value){
+      this.livePlayerController = value;
+      this.setState(() {});
+    });
+  }
+
+Container(height: 200, child: FTLPlayerWidget(this.livePlayerController)),
 ```
-可以自定义修改UI，例如增加弹幕之类的功能，也可以播放其他平台的直播不一定要腾讯的。
+
+详细使用 https://github.com/tion126/flutter_live
+
+可以自定义修改UI，也可以播放其他平台的直播不一定要腾讯的。
 
 目前已知问题 
 

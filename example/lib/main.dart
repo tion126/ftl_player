@@ -47,7 +47,10 @@ class PlayerExampleState extends State<PlayerExample>{
   @override
   void initState() {
     super.initState();
-    FTLPlayer.init().then((value) => this.livePlayerController = value);
+    FTLPlayer.init().then((value){
+      this.livePlayerController = value;
+      this.setState(() {});
+    });
   }
 
   @override
